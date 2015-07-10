@@ -40,4 +40,23 @@ namespace Microsoft.Azure.Common.Extensions
 
         List<ProductInfoHeaderValue> UserAgents { get; set; }
     }
+    
+    public interface IClientFactory1
+    {
+        TClient CreateClient<TClient>(AzureContext context, AzureEnvironment.Endpoint endpoint) where TClient : ServiceClient<TClient>;
+
+        TClient CreateClient<TClient>(AzureSubscription subscription, AzureEnvironment.Endpoint endpoint) where TClient : ServiceClient<TClient>;
+
+        TClient CreateCustomClient<TClient>(params object[] parameters) where TClient : ServiceClient<TClient>;
+
+        HttpClient CreateHttpClient(string endpoint, ICredentials credentials);
+
+        HttpClient CreateHttpClient(string endpoint, HttpMessageHandler effectiveHandler);
+
+        void AddAction(IClientAction action);
+
+        void RemoveAction(Type actionType);
+
+        List<ProductInfoHeaderValue> UserAgents { get; set; }
+    }
 }
