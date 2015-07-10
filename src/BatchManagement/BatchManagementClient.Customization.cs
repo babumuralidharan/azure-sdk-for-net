@@ -70,3 +70,30 @@ namespace Microsoft.Azure.Management.Batch
         }
     }
 }
+
+namespace Microsoft.Azure.Management.Batch1
+{
+    public partial class BatchManagementClient
+    {
+        public static BatchManagementClient Create(IDictionary<string, object> settings)
+        {
+            if (settings == null)
+            {
+                throw new ArgumentNullException("settings");
+            }
+
+            TokenCloudCredentials credentials = ConfigurationHelper.GetCredentials<TokenCloudCredentials>(settings);
+
+            Uri baseUri = ConfigurationHelper.GetUri(settings, "BaseUri", false);
+
+            return baseUri != null ?
+                new BatchManagementClient(credentials, baseUri) :
+                new BatchManagementClient(credentials);
+        }
+
+        public override BatchManagementClient WithHandler(DelegatingHandler handler)
+        {
+            return (BatchManagementClient)WithHandler(new BatchManagementClient(), handler);
+        }
+    }
+}
